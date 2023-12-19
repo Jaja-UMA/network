@@ -22,6 +22,7 @@ int connectServer(const char *host,const char *port,struct addrinfo *hints, stru
 
     if(getaddrinfo(host,port,&hints,&res) !=0){
         printf("error:getaddrinfoargv[0]= \n");
+        return 0;
     }
     sock = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
     if(sock == -1){
@@ -30,7 +31,7 @@ int connectServer(const char *host,const char *port,struct addrinfo *hints, stru
     }
     if(connect(sock,res->ai_addr,res->ai_addrlen) == -1)
     {
-        fprintf(stderr,"connect\n");
+        fprintf(stderr,"connectEROOR (%s)\n",strerror(errno));
         return 0;
     }
     printf("connection is done\n");
