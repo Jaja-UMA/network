@@ -16,7 +16,7 @@ int myprint(const char *text){
     return 1;
 }
 
-int connectServer(const char *host,const char *path,const char *port)
+int connectServer(const char *host,const char *path,const char *port,struct addrinfo *hints, struct addrinfo *res)
 {
     int socket;
 
@@ -34,5 +34,7 @@ int connectServer(const char *host,const char *path,const char *port)
         return 0;
     }
     printf("connection is done\n");
+
+    return socket;
 
 }
