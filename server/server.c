@@ -45,23 +45,25 @@ int main(int argc,char *argv)
 
     //受信フロー
     char buf2[BUF_SIZE];
+    char str_length[5];
     while(1==1){
         if(recv(news,buf,BUF_SIZE,0) == -1){
             fprintf(stderr,"recvERROR\n");
             return 0;
         }
         write(1,buf,com_code);
-    }
-
-
-    //送信フロー
-    char str_length[5];
-    sprintf(str_length,"%d",strlen(buf));
+        sprintf(str_length,"%d",strlen(buf));
     if(send(news,str_length,sizeof(str_length),0)==-1)
     {
         fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
         return 0;
     }
+    }
+
+
+    //送信フロー
+
+
 
 
     //buf = fileToOut("index.html");
