@@ -17,7 +17,7 @@ int main(int argc,char *argv)
 
     sa.sin_family = AF_INET;
     sa.sin_addr.s_addr = htonl(INADDR_ANY);
-    sa.sin_port = htons((uint)atoi("61001"));
+    sa.sin_port = htons((uint)atoi("61002"));
 
     if(bind(s_s, (struct sockaddr*)&sa, sizeof(sa)) == -1)
     {
@@ -45,13 +45,12 @@ int main(int argc,char *argv)
 
     //受信フロー
     char buf2[BUF_SIZE];
-    while(1==1){
-        if(recv(news,buf,BUF_SIZE,0) == -1){
-            fprintf(stderr,"recvERROR\n");
-            return 0;
-        }
-        write(1,buf,com_code);
+    if(recv(news,buf,BUF_SIZE,0) == -1){
+        fprintf(stderr,"recvERROR\n");
+        return 0;
     }
+    write(1,buf,com_code);
+
 
 
     //送信フロー
