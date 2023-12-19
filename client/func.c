@@ -15,3 +15,8 @@ int myprint(const char *text){
     putchar('\n');
     return 1;
 }
+
+int connectServer(const char *host,const char *path,const char *port)
+{
+
+}
