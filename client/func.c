@@ -18,23 +18,23 @@ int myprint(const char *text){
 
 int connectServer(const char *host,const char *path,const char *port,struct addrinfo *hints, struct addrinfo *res)
 {
-    int socket;
+    int sock;
 
     if(getaddrinfo(host,port,&hints,&res) !=0){
-        printf("error:getaddrinfoargv[0]= %s\n",argv[1]);
+        printf("error:getaddrinfoargv[0]= \n");
     }
-    socket = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
-    if(socket == -1){
+    sock = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
+    if(sock == -1){
         fprintf(stderr,"socket Error\n");
         return 0;
     }
-    if(connect(socket,res->ai_addr,res->ai_addrlen) == -1)
+    if(connect(sock,res->ai_addr,res->ai_addrlen) == -1)
     {
         fprintf(stderr,"connect\n");
         return 0;
     }
     printf("connection is done\n");
 
-    return socket;
+    return sock;
 
 }
