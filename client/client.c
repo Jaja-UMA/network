@@ -30,7 +30,7 @@ int main(int argc,char *argv[]){
 
     printf("argv[1]:%s argv[2]:%s argv[3]:%s\nsend_mes = %s\n",argv[1],argv[2],argv[3],send_mes);
 
-    s=connectServer(argv[1],argv[3],&hints,res);
+    s=connectServer(argv[1],argv[3],&hints,&res);
     if(send(s,send_mes,BUF_SIZE,0)==-1)
     {
         fprintf(stderr,"sendERROR\n");

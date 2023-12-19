@@ -16,12 +16,12 @@ int myprint(const char *text){
     return 1;
 }
 
-int connectServer(const char *host,const char *port,struct addrinfo *hints, struct addrinfo *res)
+int connectServer(const char *host,const char *port,struct addrinfo *hints, struct addrinfo **res)
 {
     int sock;
 
-    if(getaddrinfo(host,port,&hints,&res) !=0){
-        printf("error:getaddrinfoargv[0]= \n");
+    if(getaddrinfo(host,port,hints,res) !=0){
+        printf("getaddrinfoERROR (%s)\n",strerror(errno));
         return 0;
     }
     sock = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
