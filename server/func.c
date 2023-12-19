@@ -42,8 +42,4 @@ char * bufToFile(const char *path)
 
 }
 
-char* countStrlen(const char *messege)
-{
-    char len[10];
 
-}
