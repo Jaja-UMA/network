@@ -50,6 +50,11 @@ int main(int argc,char *argv[]){
             printf("クライアント終了\n");
             break;
         }
+        if(next_procec(send_mes)==-1)
+        {
+            printf("unvaid strings\n");
+            break;
+        }
 
 
         if(send(s,send_mes,BUF_SIZE,0)==-1)
