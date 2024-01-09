@@ -47,30 +47,29 @@ int main(int argc,char *argv[]){
             printf("ファイルの読み込みエラー\nat:inToOut");
             exit(0);
         }
+        //%Qの処理
         if(next_procec(send_mes)==0)
         {
             printf("クライアント終了\n");
-            break;
-        }else if(next_procec(send_mes)==-1){
-            printf("unvaid strings\n");
             if(send(s,err_mes,BUF_SIZE,0)==-1)
             {
+                    fprintf(stderr,"sendERROR\n");
+                    return 0;
+            }
+            recv(s,buf,BUF_SIZE,0);
+            close(s);
+            break;
+        }
+
+        if(send(s,send_mes,BUF_SIZE,0)==-1)
+        {
                 fprintf(stderr,"sendERROR\n");
                 return 0;
-            }
-        }else{
-            if(send(s,send_mes,BUF_SIZE,0)==-1)
-            {
-                fprintf(stderr,"sendERROR\n");
-                return 0;
-            }
         }
         printf("sending is done\nyou send:%s\n",send_mes);
-
-
         recv(s,buf,BUF_SIZE,0);
         printf("recieving is done\n");
-        myprint(buf);
+        printf("%s\n",buf);
         printf("~~~~~~~~~~~NEXT PROCECC~~~~~~~~~~~~\n");
     }
 
