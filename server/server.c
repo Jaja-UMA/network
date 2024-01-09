@@ -1,5 +1,8 @@
 #include"libs.h"
 #include"header.h"
+extern struct profile profile_data[10000];
+extern int    nprofiles = 0;
+
 int main(int argc,char *argv)
 {
     struct sockaddr_in sa, ca;
@@ -56,7 +59,7 @@ int main(int argc,char *argv)
         myprint(buf);
         printf("receive is done\n");
         if(buf[0]=='%')parse_input(buf);
-        
+
         if(send(news,buf,sizeof(str_length),0)==-1)
         {
             fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
