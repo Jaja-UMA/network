@@ -40,17 +40,20 @@ int main(int argc,char *argv[]){
     }
     printf("connection is done\n");
 
-    if(send(s,send_mes,BUF_SIZE,0)==-1)
-    {
-        fprintf(stderr,"sendERROR\n");
-        return 0;
+    while(1){
+        if(send(s,send_mes,BUF_SIZE,0)==-1)
+        {
+            fprintf(stderr,"sendERROR\n");
+            return 0;
+        }
+        printf("sending is done\nyou send:%s\n",send_mes);
+
+
+        recv(s,buf,BUF_SIZE,0);
+        printf("recieving is done\n");
+        myprint(buf);
     }
-    printf("sending is done\nyou send:%s\n",send_mes);
 
-
-    recv(s,buf,BUF_SIZE,0);
-    printf("recieving is done\n");
-    myprint(buf);
 
     close(s);
     return 0;
