@@ -4,6 +4,7 @@
 /* グローバル変数 ********************************************************** */
 struct profile profile_data[10000];
 int    nprofiles = 0;
+char   sending[BUF_SIZE];
 
 int myprint(const char *text){
     int n,textLen;
@@ -87,7 +88,7 @@ int split (char *str, char *ret[], char separator, int nitems) {
 struct profile* add_profile (struct profile *p,
 	     char           *line) {
   char *data[5], *birth[3];
-
+  printf("プロフィール登録\n");
   split(line, data, ',', 5);
 
   p->id = atoi(data[0]);
@@ -113,6 +114,7 @@ void command_quit (void) {
 /* チェックコマンド(%C) **************************************************** */
 void command_check (void) {
   printf ("%d profile(s)\n", nprofiles);
+  sprintf(sending,"%d profile(s)\n", nprofiles);
 }
 
 /* ************************************************************************* *
@@ -340,8 +342,10 @@ int parse_input (char *line) {
 
   subst(line, '\n', '\0');
   if (line[0] == '%') {
+    printf("上来た\n");
     exec_command(line[1], &line[3]);
   } else {
+    printf("下来た\n");
     add_profile(&profile_data[nprofiles], line);
     nprofiles++;
   }
