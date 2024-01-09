@@ -19,8 +19,8 @@ int next_procec(char *input){
     //printf("%d:next_procec\n",strlen(input));
     if (strcmp(input, "%Q\n") == 0) {
         return 0;
-    }else if(input[0]=="%"){
-        return 0;
+    }else if(input[0]=='%'){
+        return 1;
     } else {
         printf("一致する文字列がありません\n");
         return -1;
