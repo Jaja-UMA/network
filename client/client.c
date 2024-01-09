@@ -27,19 +27,20 @@ int main(int argc,char *argv[]){
     if(getaddrinfo(argv[1],argv[3],&hints,&res) !=0){
         printf("error:getaddrinfoargv[0]= %s\n",argv[1]);
     }
-    s = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
-    if(s==-1){
-        fprintf(stderr,"socket Error\n");
-        return 0;
-    }
-    if(connect(s,res->ai_addr,res->ai_addrlen) == -1)
-    {
-        fprintf(stderr,"connect\n");
-        return 0;
-    }
-    printf("connection is done\n");
+
 
     while(1){
+        s = socket(res->ai_family,res->ai_socktype,res->ai_protocol);
+        if(s==-1){
+            fprintf(stderr,"socket Error\n");
+            return 0;
+        }
+        if(connect(s,res->ai_addr,res->ai_addrlen) == -1)
+        {
+            fprintf(stderr,"connect\n");
+            return 0;
+        }
+        printf("connection is done\n");
         memset(send_mes,0,sizeof(send_mes));
         n = read(0,send_mes,256);
         if(n==-1||n==0){
