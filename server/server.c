@@ -1,7 +1,7 @@
 #include"libs.h"
 #include"header.h"
 extern struct profile profile_data[10000];
-extern int    nprofiles = 0;
+extern int    nprofiles;
 
 int main(int argc,char *argv)
 {
