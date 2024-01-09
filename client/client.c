@@ -41,6 +41,12 @@ int main(int argc,char *argv[]){
     printf("connection is done\n");
 
     while(1){
+        n = read(0,buf,256);
+        if(n==-1||n==0){
+            printf("ファイルの読み込みエラー\nat:inToOut");
+            exit(0);
+        }
+
         if(send(s,send_mes,BUF_SIZE,0)==-1)
         {
             fprintf(stderr,"sendERROR\n");
