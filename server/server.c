@@ -23,7 +23,7 @@ int main(int argc,char *argv)
 
     sa.sin_family = AF_INET;
     sa.sin_addr.s_addr = htonl(INADDR_ANY);
-    sa.sin_port = htons((uint)atoi("61001"));
+    sa.sin_port = htons((uint)atoi("61002"));
 
     if(bind(s_s, (struct sockaddr*)&sa, sizeof(sa)) == -1)
     {
@@ -61,7 +61,7 @@ int main(int argc,char *argv)
         }
         myprint(buf);
         printf("receive is done\n");
-        parse_input(buf);
+        if(strcmp(buf,"NON")!=0)parse_input(buf);
 
         if(send(news,sending,BUF_SIZE,0)==-1)
         {
