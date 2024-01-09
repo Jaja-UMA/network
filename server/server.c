@@ -2,9 +2,12 @@
 #include"header.h"
 extern struct profile profile_data[10000];
 extern int    nprofiles;
+extern char   sending[BUF_SIZE];
+
 
 int main(int argc,char *argv)
 {
+    memset(sending,0,BUF_SIZE);
     struct sockaddr_in sa, ca;
     //struct sockaddr;
     int s_s,news,com_code,err_num;
@@ -20,7 +23,7 @@ int main(int argc,char *argv)
 
     sa.sin_family = AF_INET;
     sa.sin_addr.s_addr = htonl(INADDR_ANY);
-    sa.sin_port = htons((uint)atoi("61002"));
+    sa.sin_port = htons((uint)atoi("61001"));
 
     if(bind(s_s, (struct sockaddr*)&sa, sizeof(sa)) == -1)
     {
@@ -58,9 +61,9 @@ int main(int argc,char *argv)
         }
         myprint(buf);
         printf("receive is done\n");
-        if(buf[0]=='%')parse_input(buf);
+        parse_input(buf);
 
-        if(send(news,buf,sizeof(str_length),0)==-1)
+        if(send(news,sending,BUF_SIZE,0)==-1)
         {
             fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
             //return 0;
