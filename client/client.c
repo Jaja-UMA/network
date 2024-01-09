@@ -8,7 +8,7 @@
 
 int main(int argc,char *argv[]){
     struct addrinfo hints,*res;
-    int s,com_code;
+    int s,n,com_code;
     char buf[BUF_SIZE];
     char send_mes[BUF_SIZE];
     if(argc!=4)
@@ -41,11 +41,13 @@ int main(int argc,char *argv[]){
     printf("connection is done\n");
 
     while(1){
-        n = read(0,buf,256);
+        n = read(0,send_mes,256);
         if(n==-1||n==0){
             printf("ファイルの読み込みエラー\nat:inToOut");
             exit(0);
         }
+        write(1,send_mes,n);
+        
 
         if(send(s,send_mes,BUF_SIZE,0)==-1)
         {
