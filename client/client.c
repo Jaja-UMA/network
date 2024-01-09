@@ -16,8 +16,6 @@ int main(int argc,char *argv[]){
         fprintf(stderr,"引数の数が足りません\n第一引数:接続先第二引数:ファイルパス 第三引数:ポート番号\n");
         return 0;
     }
-    memset(send_mes,0,sizeof(send_mes));
-    sprintf(send_mes,"GET /%s\r\n",argv[2]);
     memset(&hints,0,sizeof(hints));
     memset(buf,0,BUF_SIZE);
     hints.ai_socktype = SOCK_STREAM;
@@ -41,13 +39,18 @@ int main(int argc,char *argv[]){
     printf("connection is done\n");
 
     while(1){
+        memset(send_mes,0,sizeof(send_mes));
         n = read(0,send_mes,256);
         if(n==-1||n==0){
             printf("ファイルの読み込みエラー\nat:inToOut");
             exit(0);
         }
-        write(1,send_mes,n);
-        
+        if(next_procec(send_mes)==0)
+        {
+            printf("クライアント終了\n");
+            break;
+        }
+
 
         if(send(s,send_mes,BUF_SIZE,0)==-1)
         {
