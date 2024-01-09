@@ -147,7 +147,7 @@ void command_print (struct profile	*p,
 	       int		num) {
   int	start = 0, end = nprofiles;
   int	n;
-
+  memset(sending,0,BUF_SIZE);
   if (num > 0 && num < nprofiles) {
     end = num;
   } else if (num < 0 && num + end > 0) {
@@ -214,7 +214,7 @@ void command_find (struct profile	*p,
 	      char		*keyword) {
   char            id[8], birth[11];
   int             n;
-
+  memset(sending,0,BUF_SIZE);
   for (n = 0; n < nprofiles; n++) {
     make_id_string (p[n].id, id);
     make_birth_string (&p[n].birthday, birth);
@@ -222,7 +222,7 @@ void command_find (struct profile	*p,
 	strcmp (birth, keyword) == 0     ||
 	strcmp (p[n].name, keyword) == 0 ||
 	strcmp (p[n].home, keyword) == 0) {
-      print_profile (&p[n],NULL);
+      print_profile (&p[n],sending+strlen(sending));
       printf ("\n");
     }
   }
