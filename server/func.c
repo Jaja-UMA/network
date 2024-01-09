@@ -120,17 +120,21 @@ void command_check (void) {
 /* ************************************************************************* *
  * 登録データを１つ表示する関数
  * ************************************************************************* */
-void print_profile (struct profile	*p) {
+void print_profile (struct profile	*p,char *output) {
+  sprintf(output, "Id    : %d\nName  : %s\nBirth : %04d-%02d-%02d\nAddr  : %s\nCom.  : %s\n\n",
+            p->id, p->name, p->birthday.y, p->birthday.m, p->birthday.d, p->home, p->comment);
   printf("Id    : %d\n", p->id);
   printf("Name  : %s\n", p->name);
   printf("Birth : %04d-%02d-%02d\n",p->birthday.y,p->birthday.m,p->birthday.d);
   printf("Addr  : %s\n", p->home);
   printf("Com.  : %s\n", p->comment);
+
 }
 /* ************************************************************************* *
  * データをCSV形式で出力する関数
  * ************************************************************************* */
 void print_profile_csv (FILE *fp, struct profile *p) {
+
   fprintf(fp, "%d,", p->id);
   fprintf(fp, "%s,", p->name);
   fprintf(fp, "%04d-%02d-%02d,",p->birthday.y,p->birthday.m,p->birthday.d);
@@ -150,7 +154,7 @@ void command_print (struct profile	*p,
     start = num + end;
   }
   for (n = start; n < end; n++) {
-    print_profile(&p[n]);
+    print_profile(&p[n],sending+strlen(sending));
     printf("\n");
   }
 }
@@ -159,11 +163,16 @@ void command_print (struct profile	*p,
 void command_read (struct profile	*p,
 	      char		*filename) {
   FILE *fp = fopen(filename, "r");
-
+  printf("read来てる%s\n",filename);
   if (fp == NULL){
     fprintf(stderr, "%R: file open error %s.\n", filename);
   } else {
-    while (parse_input(fp));
+    char line[1024];
+    while (fgets(line, 1024, fp) != NULL){
+        subst(line, '\n', '\0');
+        add_profile(&profile_data[nprofiles], line);
+        nprofiles++;
+    }
     fclose(fp);
   }
 }
@@ -213,7 +222,7 @@ void command_find (struct profile	*p,
 	strcmp (birth, keyword) == 0     ||
 	strcmp (p[n].name, keyword) == 0 ||
 	strcmp (p[n].home, keyword) == 0) {
-      print_profile (&p[n]);
+      print_profile (&p[n],NULL);
       printf ("\n");
     }
   }
