@@ -336,10 +336,7 @@ void exec_command (char	command,
 /* ************************************************************************* *
  * 入力文字列の解析
  * ************************************************************************* */
-int parse_input (FILE	*fp) {
-  char line[1024];
-
-  if (fgets(line, 1024, fp) == NULL) return 0;
+int parse_input (char *line) {
 
   subst(line, '\n', '\0');
   if (line[0] == '%') {

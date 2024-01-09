@@ -64,4 +64,4 @@ void command_sort(struct profile *p, int column);
 
 void exec_command(char command, char *parameter);
 
-int parse_input(FILE *fp);
+int parse_input(char *);

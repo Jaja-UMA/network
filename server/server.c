@@ -53,12 +53,11 @@ int main(int argc,char *argv)
             fprintf(stderr,"recvERROR\n");
             //return 0;
         }
-
-        printf("receiving\n");
-
-        printf("%s\n",buf);
-        sprintf(str_length,"%ld",strlen(buf)-2);
-        if(send(news,str_length,sizeof(str_length),0)==-1)
+        myprint(buf);
+        printf("receive is done\n");
+        if(buf[0]=='%')parse_input(buf);
+        
+        if(send(news,buf,sizeof(str_length),0)==-1)
         {
             fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
             //return 0;
