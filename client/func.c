@@ -15,8 +15,9 @@ int myprint(const char *text){
     putchar('\n');
     return 1;
 }
-int next_procec(char *comm){
-    if (strcmp(input, "%%Q") == 0) {
+int next_procec(char *input){
+    //printf("%d:next_procec\n",strlen(input));
+    if (strcmp(input, "%Q\n") == 0) {
         printf("Qに一致しました\n");
         return 0;
     } else if (strcmp(input, "%%R") == 0) {
