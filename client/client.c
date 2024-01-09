@@ -11,6 +11,7 @@ int main(int argc,char *argv[]){
     int s,n,com_code;
     char buf[BUF_SIZE];
     char send_mes[BUF_SIZE];
+    char err_mes[]="NON";
     if(argc!=4)
     {
         fprintf(stderr,"引数の数が足りません\n第一引数:接続先第二引数:ファイルパス 第三引数:ポート番号\n");
@@ -49,18 +50,19 @@ int main(int argc,char *argv[]){
         {
             printf("クライアント終了\n");
             break;
-        }
-        if(next_procec(send_mes)==-1)
-        {
+        }else if(next_procec(send_mes)==-1){
             printf("unvaid strings\n");
-            break;
-        }
-
-
-        if(send(s,send_mes,BUF_SIZE,0)==-1)
-        {
-            fprintf(stderr,"sendERROR\n");
-            return 0;
+            if(send(s,err_mes,BUF_SIZE,0)==-1)
+            {
+                fprintf(stderr,"sendERROR\n");
+                return 0;
+            }
+        }else{
+            if(send(s,send_mes,BUF_SIZE,0)==-1)
+            {
+                fprintf(stderr,"sendERROR\n");
+                return 0;
+            }
         }
         printf("sending is done\nyou send:%s\n",send_mes);
 
