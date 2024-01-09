@@ -68,6 +68,7 @@ int main(int argc,char *argv[]){
         recv(s,buf,BUF_SIZE,0);
         printf("recieving is done\n");
         myprint(buf);
+        printf("~~~~~~~~~~~NEXT PROCECC~~~~~~~~~~~~\n");
     }
 
 

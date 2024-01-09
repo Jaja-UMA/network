@@ -45,14 +45,15 @@ int main(int argc,char *argv)
         printf("Connection accepted from %s:%d\n", inet_ntoa(ca.sin_addr), ntohs(ca.sin_port));
 
     //受信フロー
-    char buf2[BUF_SIZE];
-    char str_length[5];
+        char buf2[BUF_SIZE];
+        char str_length[5];
 
 
         if(recv(news,buf,BUF_SIZE,0) == -1){
             fprintf(stderr,"recvERROR\n");
             //return 0;
         }
+
         printf("receiving\n");
 
         printf("%s\n",buf);
@@ -64,6 +65,7 @@ int main(int argc,char *argv)
         }
 
         printf("sending is done\nYou send:%s\n",str_length);
+        printf("~~~~~~~~~~~~~~~~~~~~~~~~~ALL DONE~~~~~~~~~~~~~~~~~~~~~~~~\n");
         close(news);
     }
 

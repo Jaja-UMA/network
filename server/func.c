@@ -1,6 +1,10 @@
 #include"libs.h"
 #include"header.h"
 
+/* グローバル変数 ********************************************************** */
+struct profile profile_data[10000];
+int    nprofiles = 0;
+
 int myprint(const char *text){
     int n,textLen;
     char tmpText[BUF_SIZE];
@@ -102,22 +106,19 @@ struct profile* add_profile (struct profile *p,
 }
 
 /* 終了コマンド(%Q) ******************************************************** */
-void
-command_quit (void) {
+void command_quit (void) {
   exit(0);
 }
 
 /* チェックコマンド(%C) **************************************************** */
-void
-command_check (void) {
+void command_check (void) {
   printf ("%d profile(s)\n", nprofiles);
 }
 
 /* ************************************************************************* *
  * 登録データを１つ表示する関数
  * ************************************************************************* */
-void
-print_profile (struct profile	*p) {
+void print_profile (struct profile	*p) {
   printf("Id    : %d\n", p->id);
   printf("Name  : %s\n", p->name);
   printf("Birth : %04d-%02d-%02d\n",p->birthday.y,p->birthday.m,p->birthday.d);
@@ -127,8 +128,7 @@ print_profile (struct profile	*p) {
 /* ************************************************************************* *
  * データをCSV形式で出力する関数
  * ************************************************************************* */
-void
-print_profile_csv (FILE *fp, struct profile *p) {
+void print_profile_csv (FILE *fp, struct profile *p) {
   fprintf(fp, "%d,", p->id);
   fprintf(fp, "%s,", p->name);
   fprintf(fp, "%04d-%02d-%02d,",p->birthday.y,p->birthday.m,p->birthday.d);
@@ -137,8 +137,7 @@ print_profile_csv (FILE *fp, struct profile *p) {
 }
 
 /* プリントコマンド(%P) **************************************************** */
-void
-command_print (struct profile	*p,
+void command_print (struct profile	*p,
 	       int		num) {
   int	start = 0, end = nprofiles;
   int	n;
@@ -155,8 +154,7 @@ command_print (struct profile	*p,
 }
 
 /* 読み込みコマンド(%R) **************************************************** */
-void
-command_read (struct profile	*p,
+void command_read (struct profile	*p,
 	      char		*filename) {
   FILE *fp = fopen(filename, "r");
 
@@ -169,8 +167,7 @@ command_read (struct profile	*p,
 }
 
 /* 書き出しコマンド(%W) **************************************************** */
-void
-command_write (struct profile	*p,
+void command_write (struct profile	*p,
 	       char		*filename) {
   int  n;
   FILE *fp = fopen(filename, "w");
@@ -188,8 +185,7 @@ command_write (struct profile	*p,
 /* ************************************************************************* *
  * IDの値を文字列に変換する関数
  * ************************************************************************* */
-void
-make_id_string (int  id,
+void make_id_string (int  id,
 		char *str) {
   sprintf (str, "%d", id);
 }
@@ -197,8 +193,7 @@ make_id_string (int  id,
 /* ************************************************************************* *
  * Date構造体の値を-区切りの文字列に変換する関数
  * ************************************************************************* */
-void
-make_birth_string (struct date *birth,
+void make_birth_string (struct date *birth,
 		   char        *str) {
   sprintf (str, "%04d-%02d-%02d", birth->y, birth->m, birth->d);
 }
