@@ -5,6 +5,7 @@
 struct profile profile_data[10000];
 int    nprofiles = 0;
 char   sending[BUF_SIZE];
+char   *zenken=NULL;
 
 int myprint(const char *text){
     int n,textLen;
@@ -147,14 +148,15 @@ void command_print (struct profile	*p,
 	       int		num) {
   int	start = 0, end = nprofiles;
   int	n;
-  memset(sending,0,BUF_SIZE);
+  zenken = (char*)realloc(zenken,200*num);
+  memset(sending,0,200*num);
   if (num > 0 && num < nprofiles) {
     end = num;
   } else if (num < 0 && num + end > 0) {
     start = num + end;
   }
   for (n = start; n < end; n++) {
-    print_profile(&p[n],sending+strlen(sending));
+    print_profile(&p[n],zenken+strlen(zenken));
     printf("\n");
   }
 }
