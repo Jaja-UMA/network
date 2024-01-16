@@ -42,7 +42,6 @@ int main(int argc,char *argv)
     while(1){
         len = sizeof(ca);
         news = accept(s_s,(struct sockaddr*)&ca,&len);
-        //news = accept(s_s,NULL,NULL);
         if(news==-1){
             err_num=errno;
             fprintf(stderr,"acceptingERROR (%s)\n",strerror(err_num));
