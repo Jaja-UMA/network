@@ -148,8 +148,8 @@ void command_print (struct profile	*p,
 	       int		num) {
   int	start = 0, end = nprofiles;
   int	n;
-  zenken = (char*)realloc(zenken,200*num);
-  memset(sending,0,200*num);
+  zenken = (char*)realloc(zenken,200*nprofiles);
+  memset(sending,0,200*nprofiles);
   if (num > 0 && num < nprofiles) {
     end = num;
   } else if (num < 0 && num + end > 0) {
