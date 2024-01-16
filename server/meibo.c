@@ -141,7 +141,7 @@ void
 command_read (struct profile	*p,
 	      char		*filename) {
   FILE *fp = fopen(filename, "r");
-
+printf("read来てる%s\n",filename);
   if (fp == NULL){
     fprintf(stderr, "%R: file open error %s.\n", filename);
   } else {
@@ -334,12 +334,17 @@ exec_command (char	command,
  * 入力文字列の解析
  * ************************************************************************* */
 int
-parse_input (char	*line) {
+parse_input (FILE	*fp) {
+  char line[1024];
+
+  if (fgets(line, 1024, fp) == NULL) return 0;
 
   subst(line, '\n', '\0');
   if (line[0] == '%') {
+    printf("uekita\n");
     exec_command(line[1], &line[3]);
   } else {
+    printf("sitakita\n");
     add_profile(&profile_data[nprofiles], line);
     nprofiles++;
   }

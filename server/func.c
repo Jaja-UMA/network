@@ -124,11 +124,13 @@ void command_check (void) {
 void print_profile (struct profile	*p,char *output) {
   sprintf(output, "Id    : %d\nName  : %s\nBirth : %04d-%02d-%02d\nAddr  : %s\nCom.  : %s\n\n",
             p->id, p->name, p->birthday.y, p->birthday.m, p->birthday.d, p->home, p->comment);
+  /*
   printf("Id    : %d\n", p->id);
   printf("Name  : %s\n", p->name);
   printf("Birth : %04d-%02d-%02d\n",p->birthday.y,p->birthday.m,p->birthday.d);
   printf("Addr  : %s\n", p->home);
   printf("Com.  : %s\n", p->comment);
+  */
 
 }
 /* ************************************************************************* *
@@ -148,8 +150,10 @@ void command_print (struct profile	*p,
 	       int		num) {
   int	start = 0, end = nprofiles;
   int	n;
-  zenken = (char*)realloc(zenken,200*nprofiles);
-  memset(sending,0,200*nprofiles);
+  printf("npor:%d\n",nprofiles);
+  char *tmp= (char*)malloc(200);
+  zenken = (char*)realloc(tmp,1000 *nprofiles);
+  memset(zenken,0,1000 *nprofiles);
   if (num > 0 && num < nprofiles) {
     end = num;
   } else if (num < 0 && num + end > 0) {
