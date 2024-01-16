@@ -3,6 +3,8 @@
 extern struct profile profile_data[10000];
 extern int    nprofiles;
 extern char   sending[BUF_SIZE];
+extern char   *zenken;
+
 
 
 int main(int argc,char *argv)
@@ -52,6 +54,7 @@ int main(int argc,char *argv)
     //受信フロー
         char buf2[BUF_SIZE];
         char str_length[5];
+        int isParse=1;
 
 
         if(recv(news,buf,BUF_SIZE,0) == -1){
@@ -60,14 +63,21 @@ int main(int argc,char *argv)
         }
         myprint(buf);
         printf("receive is done\n");
-        if(strcmp(buf,"NON")!=0)parse_input(buf);
+        if(strcmp(buf,"NON")!=0)isParse=parse_input(buf);
 
-        if(send(news,sending,BUF_SIZE,0)==-1)
-        {
-            fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
-            //return 0;
+        if(isParse==0){
+            if(send(news,zenken,BUF_SIZE,0)==-1)
+            {
+                fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
+                //return 0;
+            }
+        }else{
+            if(send(news,sending,BUF_SIZE,0)==-1)
+            {
+                fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
+                //return 0;
+            }
         }
-
         printf("sending is done\nYou send:%s\n",str_length);
         printf("~~~~~~~~~~~~~~~~~~~~~~~~~ALL DONE~~~~~~~~~~~~~~~~~~~~~~~~\n");
         close(news);
