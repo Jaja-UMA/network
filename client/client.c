@@ -69,7 +69,8 @@ int main(int argc,char *argv[]){
         printf("sending is done\nyou send:%s\n",send_mes);
         recv(s,buf,BUF_SIZE,0);
         printf("recieving is done\n");
-        printf("%s\n",buf);
+        //printf("%s\n",buf);
+        myprint(buf);
         printf("~~~~~~~~~~~NEXT PROCECC~~~~~~~~~~~~\n");
     }
 
