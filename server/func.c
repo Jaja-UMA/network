@@ -158,7 +158,7 @@ void command_print (struct profile	*p,
     start = num + end;
   }
   for (n = start; n < end; n++) {
-    print_profile(&p[n],zenken+strlen(zenken));
+    send_adr=send_adr + print_profile(&p[n],send_adr);
     printf("\n");
   }
 }
