@@ -32,7 +32,7 @@ void command_quit(void);
 
 void command_check(void);
 
-void print_profile(struct profile *p,char *);
+int  print_profile(struct profile *p,char *);
 
 void print_profile_csv(FILE *fp, struct profile *p);
 
