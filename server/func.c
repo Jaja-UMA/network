@@ -348,7 +348,6 @@ void exec_command (char	command,
  * 入力文字列の解析
  * ************************************************************************* */
 int parse_input (char *line) {
-
   subst(line, '\n', '\0');
   if (line[0] == '%') {
     printf("上来た\n");
