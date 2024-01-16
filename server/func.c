@@ -121,7 +121,7 @@ void command_check (void) {
 /* ************************************************************************* *
  * 登録データを１つ表示する関数
  * ************************************************************************* */
-void print_profile (struct profile	*p,char *output) {
+int  print_profile (struct profile	*p,char *output) {
   sprintf(output, "Id    : %d\nName  : %s\nBirth : %04d-%02d-%02d\nAddr  : %s\nCom.  : %s\n\n",
             p->id, p->name, p->birthday.y, p->birthday.m, p->birthday.d, p->home, p->comment);
   /*
@@ -150,9 +150,7 @@ void command_print (struct profile	*p,
 	       int		num) {
   int	start = 0, end = nprofiles;
   int	n;
-  printf("npor:%d\n",nprofiles);
-  char *tmp= (char*)malloc(200);
-  zenken = (char*)realloc(tmp,1000 *nprofiles);
+  char *send_adr = sending;
   memset(zenken,0,1000 *nprofiles);
   if (num > 0 && num < nprofiles) {
     end = num;
