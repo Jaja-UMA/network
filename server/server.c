@@ -78,7 +78,7 @@ int main(int argc,char *argv)
                 //return 0;
             }
         }
-        printf("sending is done\nYou send:%s\n",str_length);
+        printf("sending is done\n");
         printf("~~~~~~~~~~~~~~~~~~~~~~~~~ALL DONE~~~~~~~~~~~~~~~~~~~~~~~~\n");
         close(news);
     }
