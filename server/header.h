@@ -1,4 +1,4 @@
-#define BUF_SIZE 1024
+#define BUF_SIZE 1000000
 #define PORT 61001
 /* 個人データ用構造体 ****************************************************** */
 struct date {
