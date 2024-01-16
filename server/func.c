@@ -359,5 +359,6 @@ int parse_input (char *line) {
     add_profile(&profile_data[nprofiles], line);
     nprofiles++;
   }
+  if(line[0]== '%' && line[1]=='P')return 0;
   return 1;
 }
