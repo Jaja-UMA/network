@@ -65,18 +65,10 @@ int main(int argc,char *argv)
         printf("receive is done\n");
         if(strcmp(buf,"NON")!=0)isParse=parse_input(buf);
 
-        if(isParse==0){
-            if(send(news,zenken,BUF_SIZE,0)==-1)
-            {
+        if(send(news,sending,BUF_SIZE,0)==-1)
+        {
                 fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
                 //return 0;
-            }
-        }else{
-            if(send(news,sending,BUF_SIZE,0)==-1)
-            {
-                fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
-                //return 0;
-            }
         }
         printf("sending is done\n");
         printf("~~~~~~~~~~~~~~~~~~~~~~~~~ALL DONE~~~~~~~~~~~~~~~~~~~~~~~~\n");
