@@ -1,61 +1,35 @@
-#include"libs.h"
-#include"header.h"
+/* ********************************************************* db-sample.c *** *
+ * プログラミング演習第二 課題
+ * 名簿管理プログラムのサンプルソース
+ * ************************************************************************* */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/* 個人データ用構造体 ****************************************************** */
+struct date {
+  int y;
+  int m;
+  int d;
+};
+
+struct profile {
+  int         id;
+  char        name[70];
+  struct date birthday;
+  char        home[70];
+  char       *comment;
+};
 
 /* グローバル変数 ********************************************************** */
 struct profile profile_data[10000];
 int    nprofiles = 0;
-char   sending[BUF_SIZE];
-char   *zenken=NULL;
 
-int myprint(const char *text){
-    int n,textLen;
-    char tmpText[BUF_SIZE];
-
-    textLen = strlen(text);
-    n=0;
-    while(n<=textLen){
-        strncpy(tmpText,text+n,BUF_SIZE);
-        write(1,tmpText,BUF_SIZE);
-        n+=BUF_SIZE;
-    }
-    putchar('\n');
-    return 1;
-}
-//recvでもらった文字列からGETやPOSTを判断
-char * bufToFile(const char *path)
-{
-    char method[10];
-    char data[BUF_SIZE];
-
-    // Use sscanf to extract the method and data
-    if (sscanf(path, "%s %s", method, data) != 2) {
-        fprintf(stderr, "Invalid request format: %s\n", path);
-        return;
-    }
-
-    // Process the request based on the method
-    if (strcmp(method, "POST") == 0) {
-        printf("Processing POST request with data: %s\n", data);
-
-    } else if (strcmp(method, "GET") == 0) {
-        printf("Processing GET request for: %s\n", data);
-        // Add your GET request handling code here
-    } else {
-        fprintf(stderr, "Unsupported method: %s\n", method);
-    }
-
-    return '0';
-
-}
-
-char* countStrlen(const char *messege)
-{
-    char len[10];
-
-}
-
-
-void subst (char *s, char from, char to) {
+/* ************************************************************************* *
+ * 文字列s中の文字fromを文字toで置き換える関数
+ * ************************************************************************* */
+void
+subst (char *s, char from, char to) {
   int n;
 
   for (n = 0; s[n] != '\0'; n++) {
@@ -69,7 +43,8 @@ void subst (char *s, char from, char to) {
  * 文字列strを区切り文字separatorで最大nitems個に分割して、分割した文字列の
  * それぞれの先頭アドレスを配列retに代入する関数
  * ************************************************************************* */
-int split (char *str, char *ret[], char separator, int nitems) {
+int
+split (char *str, char *ret[], char separator, int nitems) {
   int count = 0, n;
 
   ret[count++] = str;
@@ -86,10 +61,11 @@ int split (char *str, char *ret[], char separator, int nitems) {
 /* ************************************************************************* *
  * 入力文字列lineを解析してデータを登録する関数
  * ************************************************************************* */
-struct profile* add_profile (struct profile *p,
+struct profile*
+add_profile (struct profile *p,
 	     char           *line) {
   char *data[5], *birth[3];
-  printf("プロフィール登録\n");
+
   split(line, data, ',', 5);
 
   p->id = atoi(data[0]);
@@ -108,36 +84,33 @@ struct profile* add_profile (struct profile *p,
 }
 
 /* 終了コマンド(%Q) ******************************************************** */
-void command_quit (void) {
+void
+command_quit (void) {
   exit(0);
 }
 
 /* チェックコマンド(%C) **************************************************** */
-void command_check (void) {
+void
+command_check (void) {
   printf ("%d profile(s)\n", nprofiles);
-  sprintf(sending,"%d profile(s)\n", nprofiles);
 }
 
 /* ************************************************************************* *
  * 登録データを１つ表示する関数
  * ************************************************************************* */
-void print_profile (struct profile	*p,char *output) {
-  sprintf(output, "Id    : %d\nName  : %s\nBirth : %04d-%02d-%02d\nAddr  : %s\nCom.  : %s\n\n",
-            p->id, p->name, p->birthday.y, p->birthday.m, p->birthday.d, p->home, p->comment);
-  /*
+void
+print_profile (struct profile	*p) {
   printf("Id    : %d\n", p->id);
   printf("Name  : %s\n", p->name);
   printf("Birth : %04d-%02d-%02d\n",p->birthday.y,p->birthday.m,p->birthday.d);
   printf("Addr  : %s\n", p->home);
   printf("Com.  : %s\n", p->comment);
-  */
-
 }
 /* ************************************************************************* *
  * データをCSV形式で出力する関数
  * ************************************************************************* */
-void print_profile_csv (FILE *fp, struct profile *p) {
-
+void
+print_profile_csv (FILE *fp, struct profile *p) {
   fprintf(fp, "%d,", p->id);
   fprintf(fp, "%s,", p->name);
   fprintf(fp, "%04d-%02d-%02d,",p->birthday.y,p->birthday.m,p->birthday.d);
@@ -146,45 +119,40 @@ void print_profile_csv (FILE *fp, struct profile *p) {
 }
 
 /* プリントコマンド(%P) **************************************************** */
-void command_print (struct profile	*p,
+void
+command_print (struct profile	*p,
 	       int		num) {
   int	start = 0, end = nprofiles;
   int	n;
-  printf("npor:%d\n",nprofiles);
-  char *tmp= (char*)malloc(200);
-  zenken = (char*)realloc(tmp,1000 *nprofiles);
-  memset(zenken,0,1000 *nprofiles);
+
   if (num > 0 && num < nprofiles) {
     end = num;
   } else if (num < 0 && num + end > 0) {
     start = num + end;
   }
   for (n = start; n < end; n++) {
-    print_profile(&p[n],zenken+strlen(zenken));
+    print_profile(&p[n]);
     printf("\n");
   }
 }
 
 /* 読み込みコマンド(%R) **************************************************** */
-void command_read (struct profile	*p,
+void
+command_read (struct profile	*p,
 	      char		*filename) {
   FILE *fp = fopen(filename, "r");
-  printf("read来てる%s\n",filename);
+printf("read来てる%s\n",filename);
   if (fp == NULL){
     fprintf(stderr, "%R: file open error %s.\n", filename);
   } else {
-    char line[1024];
-    while (fgets(line, 1024, fp) != NULL){
-        subst(line, '\n', '\0');
-        add_profile(&profile_data[nprofiles], line);
-        nprofiles++;
-    }
+    while (parse_input(fp));
     fclose(fp);
   }
 }
 
 /* 書き出しコマンド(%W) **************************************************** */
-void command_write (struct profile	*p,
+void
+command_write (struct profile	*p,
 	       char		*filename) {
   int  n;
   FILE *fp = fopen(filename, "w");
@@ -202,7 +170,8 @@ void command_write (struct profile	*p,
 /* ************************************************************************* *
  * IDの値を文字列に変換する関数
  * ************************************************************************* */
-void make_id_string (int  id,
+void
+make_id_string (int  id,
 		char *str) {
   sprintf (str, "%d", id);
 }
@@ -210,17 +179,19 @@ void make_id_string (int  id,
 /* ************************************************************************* *
  * Date構造体の値を-区切りの文字列に変換する関数
  * ************************************************************************* */
-void make_birth_string (struct date *birth,
+void
+make_birth_string (struct date *birth,
 		   char        *str) {
   sprintf (str, "%04d-%02d-%02d", birth->y, birth->m, birth->d);
 }
 
 /* 検索コマンド(%F) ******************************************************** */
-void command_find (struct profile	*p,
+void
+command_find (struct profile	*p,
 	      char		*keyword) {
   char            id[8], birth[11];
   int             n;
-  memset(sending,0,BUF_SIZE);
+
   for (n = 0; n < nprofiles; n++) {
     make_id_string (p[n].id, id);
     make_birth_string (&p[n].birthday, birth);
@@ -228,7 +199,7 @@ void command_find (struct profile	*p,
 	strcmp (birth, keyword) == 0     ||
 	strcmp (p[n].name, keyword) == 0 ||
 	strcmp (p[n].home, keyword) == 0) {
-      print_profile (&p[n],sending+strlen(sending));
+      print_profile (&p[n]);
       printf ("\n");
     }
   }
@@ -237,17 +208,20 @@ void command_find (struct profile	*p,
 /* ************************************************************************* *
  * 各項目でのソート関数
  * ************************************************************************* */
-int sort_by_id (struct profile	*p1,
+int
+sort_by_id (struct profile	*p1,
 	    struct profile	*p2) {
   return p1->id - p2->id;
 }
 
-int sort_by_name (struct profile	*p1,
+int
+sort_by_name (struct profile	*p1,
 	      struct profile	*p2) {
   return strcmp (p1->name, p2->name);
 }
 
-int sort_by_birthday (struct profile	*p1,
+int
+sort_by_birthday (struct profile	*p1,
 		  struct profile	*p2) {
   if (p1->birthday.y != p2->birthday.y) return p1->birthday.y - p2->birthday.y;
   if (p1->birthday.m != p2->birthday.m) return p1->birthday.m - p2->birthday.m;
@@ -256,12 +230,14 @@ int sort_by_birthday (struct profile	*p1,
   return 0;
 }
 
-int sort_by_home (struct profile	*p1,
+int
+sort_by_home (struct profile	*p1,
 	      struct profile	*p2) {
   return strcmp (p1->home, p2->home);
 }
 
-int sort_by_comment (struct profile	*p1,
+int
+sort_by_comment (struct profile	*p1,
 		 struct profile	*p2) {
   return strcmp (p1->comment, p2->comment);
 }
@@ -269,7 +245,8 @@ int sort_by_comment (struct profile	*p1,
 /* ************************************************************************* *
  * クイックソート
  * ************************************************************************* */
-void quick_sort (struct profile	*p,
+void
+quick_sort (struct profile	*p,
 	    int			start,
 	    int			end,
 	    int			(*compare_func) (struct profile	*p1,
@@ -302,7 +279,8 @@ void quick_sort (struct profile	*p,
 /* ************************************************************************* *
  * ソート関数の配列
  * ************************************************************************* */
-int (*compare_function[]) (struct profile	*p1,struct profile	*p2) =
+int (*compare_function[]) (struct profile	*p1,
+			   struct profile	*p2) =
 {
   sort_by_id,
   sort_by_name,
@@ -312,7 +290,8 @@ int (*compare_function[]) (struct profile	*p1,struct profile	*p2) =
 };
 
 /* 整列コマンド(%S) ******************************************************** */
-void command_sort (struct profile    *p,
+void
+command_sort (struct profile    *p,
 	      int               column) {
   quick_sort(profile_data, 0, nprofiles-1, compare_function[column-1]);
 }
@@ -320,7 +299,8 @@ void command_sort (struct profile    *p,
 /* ************************************************************************* *
  * コマンド分岐関数
  * ************************************************************************* */
-void exec_command (char	command,
+void
+exec_command (char	command,
 	      char	*parameter) {
   switch (command) {
   case 'Q':
@@ -353,16 +333,33 @@ void exec_command (char	command,
 /* ************************************************************************* *
  * 入力文字列の解析
  * ************************************************************************* */
-int parse_input (char *line) {
+int
+parse_input (FILE	*fp) {
+  char line[1024];
+
+  if (fgets(line, 1024, fp) == NULL) return 0;
+
   subst(line, '\n', '\0');
   if (line[0] == '%') {
-    printf("上来た\n");
+    printf("uekita\n");
     exec_command(line[1], &line[3]);
   } else {
-    printf("下来た\n");
+    printf("sitakita\n");
     add_profile(&profile_data[nprofiles], line);
     nprofiles++;
   }
-  if(line[0]== '%' && line[1]=='P')return 0;
   return 1;
 }
+
+/* ************************************************************************* *
+ * メイン関数
+ * ************************************************************************* */
+int
+main (int	argc,
+      char	**argv) {
+  while (parse_input(stdin)) ;
+
+  return 0;
+}
+
+/* ************************************************** End of db-sample.c *** */

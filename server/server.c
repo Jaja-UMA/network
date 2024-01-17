@@ -1,7 +1,15 @@
 #include"libs.h"
 #include"header.h"
+extern struct profile profile_data[10000];
+extern int    nprofiles;
+extern char   sending[BUF_SIZE];
+extern char   *zenken;
+
+
+
 int main(int argc,char *argv)
 {
+    memset(sending,0,BUF_SIZE);
     struct sockaddr_in sa, ca;
     //struct sockaddr;
     int s_s,news,com_code,err_num;
@@ -17,7 +25,7 @@ int main(int argc,char *argv)
 
     sa.sin_family = AF_INET;
     sa.sin_addr.s_addr = htonl(INADDR_ANY);
-    sa.sin_port = htons((uint)atoi("61001"));
+    sa.sin_port = htons((uint)atoi("61002"));
 
     if(bind(s_s, (struct sockaddr*)&sa, sizeof(sa)) == -1)
     {
@@ -33,42 +41,50 @@ int main(int argc,char *argv)
     }
     printf("listen is done\n");
 
-    len = sizeof(ca);
-    news = accept(s_s,(struct sockaddr*)&ca,&len);
-    //news = accept(s_s,NULL,NULL);
-    if(news==-1){
-        err_num=errno;
-        fprintf(stderr,"acceptingERROR (%s)\n",strerror(err_num));
-        return 0;
-    }
-    printf("Connection accepted from %s:%d\n", inet_ntoa(ca.sin_addr), ntohs(ca.sin_port));
-
-    //受信フロー
-    char buf2[BUF_SIZE];
-    while(1==1){
-        if(recv(news,buf,BUF_SIZE,0) == -1){
-            fprintf(stderr,"recvERROR\n");
+    while(1){
+        len = sizeof(ca);
+        news = accept(s_s,(struct sockaddr*)&ca,&len);
+        if(news==-1){
+            err_num=errno;
+            fprintf(stderr,"acceptingERROR (%s)\n",strerror(err_num));
             return 0;
         }
-        write(1,buf,com_code);
+        printf("Connection accepted from %s:%d\n", inet_ntoa(ca.sin_addr), ntohs(ca.sin_port));
+
+    //受信フロー
+        char buf2[BUF_SIZE];
+        char str_length[5];
+        int isParse=1;
+
+
+        if(recv(news,buf,BUF_SIZE,0) == -1){
+            fprintf(stderr,"recvERROR\n");
+            //return 0;
+        }
+        myprint(buf);
+        printf("receive is done\n");
+        if(strcmp(buf,"NON")!=0)isParse=parse_input(buf);
+
+        if(isParse==0){
+            if(send(news,zenken,BUF_SIZE,0)==-1)
+            {
+                fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
+                //return 0;
+            }
+        }else{
+            if(send(news,sending,BUF_SIZE,0)==-1)
+            {
+                fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
+                //return 0;
+            }
+        }
+        printf("sending is done\n");
+        printf("~~~~~~~~~~~~~~~~~~~~~~~~~ALL DONE~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        close(news);
     }
 
+    printf("finished\n");
 
-    //送信フロー
-    char str_length[5];
-    sprintf(str_length,"%d",strlen(buf));
-    if(send(news,str_length,sizeof(str_length),0)==-1)
-    {
-        fprintf(stderr,"sendERROR (%s)\n",strerror(errno));
-        return 0;
-    }
-
-
-    //buf = fileToOut("index.html");
-
-
-
-    close(news);
     close(s_s);
 
     return 0;
