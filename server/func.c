@@ -151,14 +151,16 @@ void command_print (struct profile	*p,
   int	start = 0, end = nprofiles;
   int	n;
   char *send_adr = sending;
-  memset(zenken,0,1000 *nprofiles);
+  printf("command_print\n");
+
   if (num > 0 && num < nprofiles) {
     end = num;
   } else if (num < 0 && num + end > 0) {
     start = num + end;
   }
   for (n = start; n < end; n++) {
-    send_adr=send_adr + print_profile(&p[n],send_adr);
+    send_adr = send_adr + print_profile(&p[n],send_adr);
+    printf("%d",n);
     printf("\n");
   }
 }
