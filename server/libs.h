@@ -9,9 +9,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include <errno.h>
+#include<errno.h>
 #include<unistd.h>
-#include <arpa/inet.h>
+#include<arpa/inet.h>
 #include<fcntl.h>
 
 #endif // MY_LIBS_H
