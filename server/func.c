@@ -103,7 +103,7 @@ struct profile* add_profile (struct profile *p,
   p->birthday.y = atoi(birth[0]);
   p->birthday.m = atoi(birth[1]);
   p->birthday.d = atoi(birth[2]);
-
+  sprintf(sending,"profile is add\n");
   return p;
 }
 

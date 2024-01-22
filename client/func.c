@@ -22,7 +22,7 @@ int next_procec(char *input){
     }else if(input[0]=='%'){
         return 1;
     } else {
-        printf("一致する文字列がありません\n");
+        //printf("一致する文字列がありません\n");
         return -1;
     }
 }

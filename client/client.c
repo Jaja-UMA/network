@@ -22,7 +22,7 @@ int main(int argc,char *argv[]){
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_family = AF_INET;
 
-    printf("argv[1]:%s argv[2]:%s argv[3]:%s\nsend_mes = %s\n",argv[1],argv[2],argv[3],send_mes);
+    //printf("argv[1]:%s argv[2]:%s argv[3]:%s\nsend_mes = %s\n",argv[1],argv[2],argv[3],send_mes);
 
     if(getaddrinfo(argv[1],argv[3],&hints,&res) !=0){
         printf("error:getaddrinfoargv[0]= %s\n",argv[1]);

@@ -59,7 +59,6 @@ int main(int argc,char *argv)
 
         if(recv(news,buf,BUF_SIZE,0) == -1){
             fprintf(stderr,"recvERROR\n");
-            //return 0;
         }
         myprint(buf);
         printf("receive is done\n");
